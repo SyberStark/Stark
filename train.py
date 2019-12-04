@@ -36,7 +36,6 @@ def load_split(basePath, csvPath):
 		# check to see if we should show a status update
 		if i > 0 and i % 1000 == 0:
 			print("[INFO] processed {} total images".format(i))
-
 		# split the row into components and then grab the class ID
 		# and image path
 		(label, imagePath) = row.strip().split(",")[-2:]
@@ -48,7 +47,7 @@ def load_split(basePath, csvPath):
 		# resize the image to be 32x32 pixels, ignoring aspect ratio,
 		# and then perform Contrast Limited Adaptive Histogram
 		# Equalization (CLAHE)
-		image = transform.resize(image, (32, 32))
+		image = transform.resize(image, (246, 246))
 		image = exposure.equalize_adapthist(image, clip_limit=0.1)
 
 		# update the list of data and labels, respectively
@@ -108,7 +107,7 @@ classWeight = classTotals.max() / classTotals
 
 # construct the image generator for data augmentation
 aug = ImageDataGenerator(
-	rotation_range=20,
+	rotation_range=30,
 	zoom_range=0.15,
 	width_shift_range=0.1,
 	height_shift_range=0.1,
@@ -120,7 +119,7 @@ aug = ImageDataGenerator(
 # initialize the optimizer and model
 print("[INFO] compiling model...")
 opt = Adam(lr=INIT_LR, decay=INIT_LR / (NUM_EPOCHS * 0.5))
-model = TrafficSignNet.build(width=32, height=32, depth=3,
+model = TrafficSignNet.build(width=246, height=246, depth=3,
 	classes=numLabels)
 model.compile(loss="categorical_crossentropy", optimizer=opt,
 	metrics=["accuracy"])

@@ -49,7 +49,7 @@ while True:
     (H, W) = frame.shape[:2]
     output = frame.copy()
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    image = transform.resize(frame, (32, 32))
+    image = transform.resize(frame, (246, 246))
     image = exposure.equalize_adapthist(image, clip_limit=0.1)
     image = image.astype("float32") / 255.0
     image = np.expand_dims(image, axis=0)
